@@ -98,6 +98,8 @@ export default class OseItem extends Item {
 
     // Filter properties and return
     itemData.properties = props.filter((p) => !!p);
+    // Use sanitized description to prevent XSS
+    itemData.description = this.system.enrichedDescription;
     return itemData;
   }
 
@@ -176,8 +178,9 @@ export default class OseItem extends Item {
     };
 
     if (this.type === "spell") {
-      rollData.description = itemData.description
-    };
+      // Use sanitized enrichedDescription to prevent XSS
+      rollData.description = this.system.enrichedDescription;
+    }
 
     // Roll and return
     return OseDice.Roll({
